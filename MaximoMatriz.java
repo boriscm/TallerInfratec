@@ -23,7 +23,7 @@ public class MaximoMatriz extends Thread{
 
     public static void crearMatriz() {
         for(int i = 0; i < DIM; i++){
-            for(int j = 0; i < DIM; i++){
+            for(int j = 0; j < DIM; j++){
                 matriz[i][j] = ThreadLocalRandom.current().nextInt(0, INT_MAX);
             }
         }
@@ -35,10 +35,55 @@ public class MaximoMatriz extends Thread{
 
     public static void imprimirMatriz(){
         for(int i = 0; i < DIM; i++){
-            for(int j = 0; i < DIM; i++){
+            for(int j = 0; j < DIM; j++){
                 System.out.print(matriz[i][j] + "\t");
             }
             System.out.println();
         }
     }
+
+    @Override 
+    public void run() {
+        for(int j = 0; j < DIM; j++){
+            if(this.mayorFila < matriz[this.fila][j]){
+                this.mayorFila = matriz[this.fila][j];
+            }
+        }
+
+        if (this.mayorFila > mayor) {
+            try {
+                Thread.sleep(250);
+            }
+            catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            mayor = this.mayorFila;
+            String warm = String.format("======== Nuevo macimo encontrado ========== \n " +
+            "ID Thread: %d - Maximo local actual: %d - Maximo global: %d \n" +
+            "\n", this.idThread, mayor, this.mayorFila);
+            System.out.println(warm);
+        }
+
+        String msg = String.format("ID Thread: %d - Maximo local actual: %d - Maximo global: %d",
+                    this.idThread, this.mayorFila, mayor);
+        System.out.println(msg);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Busqueda concurrente por una matriz");
+
+        MaximoMatriz.crearMatriz();
+        System.out.println();
+        System.out.println("Iniciando la busqueda por la matriz \n");
+
+        MaximoMatriz[] bThreas = new MaximoMatriz[DIM];
+        for(int i = 0; i< DIM; i++){
+            bThreas[i] = new MaximoMatriz(i, i);
+            bThreas[i].start();
+        }
+
+        
+    }
+
 }
