@@ -1,3 +1,5 @@
+package parte1b;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MaximoMatriz extends Thread{
@@ -61,7 +63,7 @@ public class MaximoMatriz extends Thread{
             mayor = this.mayorFila;
             String warm = String.format("======== Nuevo macimo encontrado ========== \n " +
             "ID Thread: %d - Maximo local actual: %d - Maximo global: %d \n" +
-            "\n", this.idThread, mayor, this.mayorFila);
+            "\n", this.idThread, this.mayorFila, mayor);
             System.out.println(warm);
         }
 
